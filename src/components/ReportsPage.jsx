@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Calendar, Download, TrendingUp, DollarSign, Package, Users, FileText, Filter } from 'lucide-react'
+import SalesCharts from './SalesCharts'
 
 const ReportsPage = ({ selectedCompany }) => {
   const [selectedReport, setSelectedReport] = useState('sales')
@@ -108,19 +109,10 @@ const ReportsPage = ({ selectedCompany }) => {
             <Package className="w-8 h-8 text-sage-bg" />
           </div>
         </div>
-      </div>
-
-      {/* Sales Chart Placeholder */}
-      <div className="bg-white p-6 rounded-lg border border-gray-200">
-        <h3 className="text-button font-medium text-sage-bg mb-4">Sales Trend</h3>
-        <div className="h-64 bg-gray-50 rounded-lg flex items-center justify-center">
-          <div className="text-center text-sage-bg/60">
-            <TrendingUp className="w-12 h-12 mx-auto mb-2 opacity-50" />
-            <p className="text-body">Sales chart visualization would appear here</p>
-            <p className="text-xs">Integration with charting library needed</p>
-          </div>
-        </div>
-      </div>
+      </div>      {/* Sales Chart */}
+      <SalesCharts 
+        selectedCompany={selectedCompany} 
+      />
 
       {/* Recent Transactions */}
       <div className="bg-white rounded-lg border border-gray-200">

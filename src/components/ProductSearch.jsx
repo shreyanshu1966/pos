@@ -1,17 +1,22 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import { searchProducts } from '../data/mockData'
 import { Package, Plus, AlertTriangle } from 'lucide-react'
 
 const ProductSearch = ({ query, onSelectProduct, onClose }) => {
   const [results, setResults] = useState([])
   const [selectedIndex, setSelectedIndex] = useState(0)
-
+  const containerRef = useRef(null)
   useEffect(() => {
-    const searchResults = searchProducts(query)
-    setResults(searchResults)
+    if (query.trim() === '') {
+      // Show all products when no search query
+      const allProducts = searchProducts('')
+      setResults(allProducts.slice(0, 10)) // Limit to first 10 products for performance
+    } else {
+      const searchResults = searchProducts(query)
+      setResults(searchResults)
+    }
     setSelectedIndex(0)
   }, [query])
-
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (e.key === 'ArrowDown') {
@@ -30,11 +35,20 @@ const ProductSearch = ({ query, onSelectProduct, onClose }) => {
       }
     }
 
-    document.addEventListener('keydown', handleKeyDown)
-    return () => document.removeEventListener('keydown', handleKeyDown)
-  }, [results, selectedIndex, onSelectProduct, onClose])
+    const handleClickOutside = (e) => {
+      if (containerRef.current && !containerRef.current.contains(e.target)) {
+        onClose()
+      }
+    }
 
-  if (results.length === 0) {
+    document.addEventListener('keydown', handleKeyDown)
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown)
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [results, selectedIndex, onSelectProduct, onClose])
+  if (results.length === 0 && query.trim() !== '') {
     return (
       <div className="absolute top-full left-0 right-0 mt-1 bg-white rounded-md shadow-lg border border-gray-200 z-30">
         <div className="p-4 text-center text-sage-bg/60">
@@ -45,9 +59,8 @@ const ProductSearch = ({ query, onSelectProduct, onClose }) => {
       </div>
     )
   }
-
   return (
-    <div className="absolute top-full left-0 right-0 mt-1 bg-white rounded-md shadow-lg border border-gray-200 z-30 max-h-80 overflow-y-auto">
+    <div ref={containerRef} className="absolute top-full left-0 right-0 mt-1 bg-white rounded-md shadow-lg border border-gray-200 z-30 max-h-80 overflow-y-auto">
       <div className="py-2">
         {results.map((product, index) => (
           <button
@@ -96,14 +109,16 @@ const ProductSearch = ({ query, onSelectProduct, onClose }) => {
           </button>
         ))}
       </div>
-      
-      {results.length > 0 && (
+        {results.length > 0 && (
         <div className="border-t border-gray-200 px-4 py-2 bg-gray-50">
           <p className="text-xs text-sage-bg/60">
             Use ↑↓ arrow keys to navigate, Enter to select, Esc to close
           </p>
           <p className="text-xs text-sage-bg/40">
-            Showing {results.length} result{results.length !== 1 ? 's' : ''} for "{query}"
+            {query.trim() === '' 
+              ? `Showing ${results.length} recent products (start typing to search)`
+              : `Showing ${results.length} result${results.length !== 1 ? 's' : ''} for "${query}"`
+            }
           </p>
         </div>
       )}

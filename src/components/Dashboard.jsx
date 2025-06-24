@@ -1,8 +1,100 @@
 import { BarChart3, Users, Package, AlertTriangle, TrendingUp, ShoppingCart, DollarSign, Clock } from 'lucide-react'
+import { Line } from 'react-chartjs-2'
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend,
+  Filler
+} from 'chart.js'
 import { salesData, products } from '../data/mockData'
+
+// Register Chart.js components
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend,
+  Filler
+)
 
 const Dashboard = ({ selectedCompany }) => {
   const lowStockItems = products.filter(product => product.stockLevel <= product.minStock)
+  
+  // Mini chart data for dashboard
+  const last7DaysLabels = []
+  const last7DaysSales = []
+  const now = new Date()
+  
+  for (let i = 6; i >= 0; i--) {
+    const date = new Date(now)
+    date.setDate(date.getDate() - i)
+    last7DaysLabels.push(date.toLocaleDateString('en-US', { weekday: 'short' }))
+    // Generate realistic sales data
+    last7DaysSales.push(12000 + Math.random() * 8000)
+  }
+
+  const miniChartData = {
+    labels: last7DaysLabels,
+    datasets: [
+      {
+        label: 'Daily Sales',
+        data: last7DaysSales,
+        borderColor: '#2a843f',
+        backgroundColor: 'rgba(42, 132, 63, 0.1)',
+        borderWidth: 2,
+        fill: true,
+        tension: 0.4,
+        pointBackgroundColor: '#2a843f',
+        pointBorderColor: '#ffffff',
+        pointBorderWidth: 1,
+        pointRadius: 3,
+        pointHoverRadius: 5
+      }
+    ]
+  }
+
+  const miniChartOptions = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        display: false
+      },
+      tooltip: {
+        backgroundColor: '#3c424f',
+        titleColor: '#ebedef',
+        bodyColor: '#ebedef',
+        borderColor: '#2a843f',
+        borderWidth: 1,
+        callbacks: {
+          label: function(context) {
+            return `Sales: R${Math.round(context.parsed.y).toLocaleString()}`
+          }
+        }
+      }
+    },
+    scales: {
+      x: {
+        display: false
+      },
+      y: {
+        display: false
+      }
+    },
+    elements: {
+      point: {
+        hoverRadius: 5
+      }
+    }
+  }
   
   const dashboardCards = [
     {
@@ -94,12 +186,16 @@ const Dashboard = ({ selectedCompany }) => {
       </div>
 
       {/* Main Content Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        {/* Sales Overview */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">        {/* Sales Overview */}
         <div className="bg-sage-text rounded-lg shadow-lg p-6">
           <div className="flex items-center space-x-3 mb-6">
             <BarChart3 className="w-6 h-6 text-sage-green" />
             <h3 className="text-button font-medium text-sage-bg">Sales Overview</h3>
+          </div>
+          
+          {/* Mini Chart */}
+          <div className="mb-6 h-32">
+            <Line data={miniChartData} options={miniChartOptions} />
           </div>
           
           <div className="space-y-4">
