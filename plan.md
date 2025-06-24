@@ -1,35 +1,57 @@
-# POS System MVP Frontend Development Plan
+# SaaS POS System MVP Frontend - Sage Integration
 
-## 🎯 **Objective**
-Create a compelling MVP frontend that demonstrates:
-- Your technical capabilities
-- Understanding of their requirements
-- Sage-themed design implementation
-- Professional quality that convinces their team
+## 🎯 **Enhanced Objective Based on Client Proposal**
+Create a comprehensive MVP frontend that demonstrates:
+- **Multi-tenant architecture** with company switching
+- **Excel-style transaction interface** (non-touchscreen POS)
+- **Perfect Sage theme integration** (exact colors, fonts, spacing)
+- **Professional desktop/tablet experience** 
+- **Scalable SaaS foundation** ready for API integration
+- **Multi-company management** like Sage Pastel One
 
-## 📋 **Priority Features for MVP (Next Few Hours)**
+## 📋 **Priority Features for MVP (Enhanced Specification)**
 
-### 1. **Login Screen** (30 minutes)
-- Sage-themed login with company branding
-- Email/password fields
-- "Connect to Sage" button
-- Responsive design matching Sage colors
+### 1. **Sage-Themed Authentication** (45 minutes)
+- **Exact Sage branding** with logo integration
+- Clean email/password fields with Sage styling
+- "Connect to Sage" CTA button
+- **Sage color palette**: #2a843f, #004089, #ebedef, #3c424f
+- **Typography**: Lato font, proper weights and sizes
+- Responsive design for desktop/tablet
 
-### 2. **Company Selection Dashboard** (45 minutes)
-- Company dropdown (top-right as specified)
-- Mock company list with realistic data
-- Sage-themed header with navigation
-- Welcome message and basic stats cards
+### 2. **Multi-Company Dashboard** (60 minutes)
+- **Company dropdown** (top-right as in Sage)
+- **Multi-tenant company switching** simulation
+- **Sage-styled header** (40px height)
+- **Dashboard cards** showing:
+  - Sales summary
+  - Transaction count
+  - Low stock alerts
+  - Recent activity
+- **80px padding** layout consistency
 
-### 3. **Main POS Transaction Screen** (90 minutes)
-- **Excel-style line item layout** (their key requirement)
-- Product search bar with inline autocomplete
-- Line-by-line product addition
-- Columns: Product, Description, Qty, Price, Total
-- Running total calculation
-- Payment section at bottom
+### 3. **Excel-Style POS Transaction Screen** (120 minutes)
+- **Microsoft Excel-like interface** (core requirement)
+- **Inline product search** with autocomplete
+- **Line-by-line product addition**
+- **Columns**: SKU, Product, Description, Qty, Unit Price, Line Total
+- **Running totals**: Subtotal, Tax, Total
+- **Payment processing section**
+- **Return/refund capabilities**
+- **Print receipt simulation**
+- **NO touchscreen/picture-based interface**
 
-### 4. **Sage Theme Implementation** (30 minutes)
+### 4. **Advanced POS Features** (90 minutes)
+- **Gift card/coupon system** (mockup)
+- **Customer lookup** integration
+- **Inventory management** display
+- **Multi-warehouse support** (visual)
+- **Picking slip generation**
+- **Sales reporting dashboard**
+- **Device limit simulation**
+- **License status indicators**
+
+### 5. **Perfect Sage Theme Implementation** (45 minutes)
 - Exact color palette: #2a843f, #004089, #ebedef, #3c424f
 - Lato font family
 - Proper spacing (80px padding)

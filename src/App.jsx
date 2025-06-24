@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
 import { useState } from 'react'
 import LoginPage from './components/LoginPage'
-import POSScreen from './components/POSScreen'
+import POSScreenEnhanced from './components/POSScreenEnhanced'
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false)
@@ -29,12 +29,11 @@ function App() {
                 <Navigate to="/pos" replace />
               )
             } 
-          />
-          <Route 
+          />          <Route 
             path="/pos" 
             element={
               isAuthenticated ? (
-                <POSScreen 
+                <POSScreenEnhanced 
                   selectedCompany={selectedCompany}
                   setSelectedCompany={setSelectedCompany}
                   onLogout={handleLogout}

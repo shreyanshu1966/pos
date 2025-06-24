@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { X, Minus, Plus } from 'lucide-react'
+import { X, Minus, Plus, AlertTriangle } from 'lucide-react'
 
 const LineItem = ({ item, index, onUpdate, onRemove }) => {
   const [isEditing, setIsEditing] = useState(false)
@@ -30,24 +30,46 @@ const LineItem = ({ item, index, onUpdate, onRemove }) => {
   }
 
   const lineTotal = item.quantity * item.price
+  const isLowStock = item.stockLevel && item.quantity > item.stockLevel
+  const profitMargin = item.cost ? ((item.price - item.cost) / item.price * 100) : 0
 
   return (
     <div className={`grid grid-cols-12 gap-4 p-4 border-b border-gray-100 hover:bg-gray-50 transition-colors ${
       index % 2 === 1 ? 'bg-gray-25' : 'bg-white'
-    }`}>
+    } ${isLowStock ? 'bg-red-50' : ''}`}>
       {/* SKU */}
       <div className="col-span-2 flex items-center">
-        <span className="text-body text-sage-bg font-mono">{item.sku}</span>
+        <div>
+          <span className="text-body text-sage-bg font-mono">{item.sku}</span>
+          {isLowStock && (
+            <div className="flex items-center text-red-600 text-xs mt-1">
+              <AlertTriangle className="w-3 h-3 mr-1" />
+              <span>Exceeds stock ({item.stockLevel})</span>
+            </div>
+          )}
+        </div>
       </div>
 
       {/* Product Name */}
       <div className="col-span-3 flex items-center">
-        <span className="text-body text-sage-bg font-medium truncate">{item.name}</span>
+        <div>
+          <span className="text-body text-sage-bg font-medium truncate">{item.name}</span>
+          {item.stockLevel && (
+            <div className="text-xs text-sage-bg/60">Stock: {item.stockLevel}</div>
+          )}
+        </div>
       </div>
 
       {/* Description */}
       <div className="col-span-3 flex items-center">
-        <span className="text-body text-sage-bg/80 truncate">{item.description}</span>
+        <div>
+          <span className="text-body text-sage-bg/80 truncate">{item.description}</span>
+          {item.cost && profitMargin > 0 && (
+            <div className="text-xs text-sage-green">
+              Margin: {profitMargin.toFixed(1)}%
+            </div>
+          )}
+        </div>
       </div>
 
       {/* Quantity */}
@@ -75,7 +97,9 @@ const LineItem = ({ item, index, onUpdate, onRemove }) => {
           ) : (
             <button
               onClick={handleQuantityEdit}
-              className="w-12 text-center text-body text-sage-bg hover:bg-gray-100 rounded px-1 py-0.5 transition-colors"
+              className={`w-12 text-center text-body rounded px-1 py-0.5 transition-colors ${
+                isLowStock ? 'text-red-600 bg-red-100' : 'text-sage-bg hover:bg-gray-100'
+              }`}
             >
               {item.quantity}
             </button>
@@ -90,14 +114,28 @@ const LineItem = ({ item, index, onUpdate, onRemove }) => {
         </div>
       </div>
 
-      {/* Price */}
+      {/* Unit Price */}
       <div className="col-span-2 flex items-center justify-end">
-        <span className="text-body text-sage-bg font-mono">${item.price.toFixed(2)}</span>
+        <div className="text-right">
+          <span className="text-body text-sage-bg font-mono">R {item.price.toFixed(2)}</span>
+          {item.cost && (
+            <div className="text-xs text-sage-bg/60 font-mono">
+              Cost: R {item.cost.toFixed(2)}
+            </div>
+          )}
+        </div>
       </div>
 
-      {/* Total */}
+      {/* Line Total */}
       <div className="col-span-1 flex items-center justify-end space-x-2">
-        <span className="text-body text-sage-bg font-mono font-medium">${lineTotal.toFixed(2)}</span>
+        <div className="text-right">
+          <span className="text-body text-sage-bg font-mono font-medium">R {lineTotal.toFixed(2)}</span>
+          {item.cost && (
+            <div className="text-xs text-sage-green font-mono">
+              +R {((item.price - item.cost) * item.quantity).toFixed(2)}
+            </div>
+          )}
+        </div>
         <button
           onClick={() => onRemove(item.id)}
           className="w-6 h-6 flex items-center justify-center rounded bg-red-100 hover:bg-red-200 text-red-600 transition-colors"

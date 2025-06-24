@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { searchProducts } from '../data/mockData'
-import { Package, Plus } from 'lucide-react'
+import { Package, Plus, AlertTriangle } from 'lucide-react'
 
 const ProductSearch = ({ query, onSelectProduct, onClose }) => {
   const [results, setResults] = useState([])
@@ -40,6 +40,7 @@ const ProductSearch = ({ query, onSelectProduct, onClose }) => {
         <div className="p-4 text-center text-sage-bg/60">
           <Package className="w-8 h-8 mx-auto mb-2 opacity-50" />
           <p className="text-body">No products found for "{query}"</p>
+          <p className="text-xs text-sage-bg/40 mt-1">Try searching by SKU, name, or barcode</p>
         </div>
       </div>
     )
@@ -66,13 +67,29 @@ const ProductSearch = ({ query, onSelectProduct, onClose }) => {
                     <div className="flex items-center space-x-2">
                       <span className="text-body font-medium text-sage-bg">{product.name}</span>
                       <span className="text-xs bg-gray-100 text-sage-bg px-2 py-1 rounded">{product.sku}</span>
+                      {product.stockLevel <= product.minStock && (
+                        <div className="flex items-center text-red-600">
+                          <AlertTriangle className="w-3 h-3 mr-1" />
+                          <span className="text-xs">Low Stock</span>
+                        </div>
+                      )}
                     </div>
                     <p className="text-xs text-sage-bg/60 truncate">{product.description}</p>
+                    <div className="flex items-center space-x-4 text-xs text-sage-bg/60 mt-1">
+                      <span>Stock: {product.stockLevel}</span>
+                      <span>Category: {product.category}</span>
+                      {product.barcode && <span>Barcode: {product.barcode}</span>}
+                    </div>
                   </div>
                 </div>
               </div>
               <div className="flex items-center space-x-3">
-                <span className="text-body font-medium text-sage-bg">${product.price.toFixed(2)}</span>
+                <div className="text-right">
+                  <div className="text-body font-medium text-sage-bg">R {product.price.toFixed(2)}</div>
+                  {product.cost && (
+                    <div className="text-xs text-sage-bg/60">Cost: R {product.cost.toFixed(2)}</div>
+                  )}
+                </div>
                 <Plus className="w-4 h-4 text-sage-green" />
               </div>
             </div>
@@ -84,6 +101,9 @@ const ProductSearch = ({ query, onSelectProduct, onClose }) => {
         <div className="border-t border-gray-200 px-4 py-2 bg-gray-50">
           <p className="text-xs text-sage-bg/60">
             Use ↑↓ arrow keys to navigate, Enter to select, Esc to close
+          </p>
+          <p className="text-xs text-sage-bg/40">
+            Showing {results.length} result{results.length !== 1 ? 's' : ''} for "{query}"
           </p>
         </div>
       )}
