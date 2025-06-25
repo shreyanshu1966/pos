@@ -204,7 +204,321 @@ const ReportsPage = ({ selectedCompany }) => {
               <span className="text-body text-sage-bg">{index + 1}. {product}</span>
               <span className="text-body text-sage-bg/60">High demand</span>
             </div>
+          ))}        </div>
+      </div>
+    </div>
+  )
+
+  const CustomerReportContent = () => (
+    <div className="space-y-6">
+      {/* Customer Metrics */}
+      <div className="grid grid-cols-4 gap-6">
+        <div className="bg-white p-6 rounded-lg border border-gray-200">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-body text-sage-bg/60">Total Customers</p>
+              <p className="text-title font-title text-sage-bg">{reportData.customers.total}</p>
+            </div>
+            <Users className="w-8 h-8 text-sage-bg" />
+          </div>
+        </div>
+
+        <div className="bg-white p-6 rounded-lg border border-gray-200">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-body text-sage-bg/60">New Customers</p>
+              <p className="text-title font-title text-sage-green">{reportData.customers.new}</p>
+            </div>
+            <Users className="w-8 h-8 text-sage-green" />
+          </div>
+          <p className="text-xs text-sage-green mt-2">This {dateRange}</p>
+        </div>
+
+        <div className="bg-white p-6 rounded-lg border border-gray-200">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-body text-sage-bg/60">Returning Customers</p>
+              <p className="text-title font-title text-sage-blue">{reportData.customers.returning}</p>
+            </div>
+            <Users className="w-8 h-8 text-sage-blue" />
+          </div>
+        </div>
+
+        <div className="bg-white p-6 rounded-lg border border-gray-200">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-body text-sage-bg/60">Avg Order Value</p>
+              <p className="text-title font-title text-sage-green">
+                R {reportData.customers.avgOrderValue.toFixed(2)}
+              </p>
+            </div>
+            <DollarSign className="w-8 h-8 text-sage-green" />
+          </div>
+        </div>
+      </div>
+
+      {/* Top Customers */}
+      <div className="bg-white p-6 rounded-lg border border-gray-200">
+        <h3 className="text-button font-medium text-sage-bg mb-4">Top Customers by Revenue</h3>
+        <div className="space-y-3">
+          {[
+            { name: 'Tech Corp Ltd', orders: 45, revenue: 89750.00, lastOrder: '2025-06-24' },
+            { name: 'Retail Solutions', orders: 32, revenue: 67890.00, lastOrder: '2025-06-23' },
+            { name: 'Digital Marketing Co', orders: 28, revenue: 45600.00, lastOrder: '2025-06-24' },
+            { name: 'Office Supplies Pro', orders: 23, revenue: 34500.00, lastOrder: '2025-06-22' },
+            { name: 'Business Partners Ltd', orders: 19, revenue: 28750.00, lastOrder: '2025-06-21' }
+          ].map((customer, index) => (
+            <div key={index} className="flex items-center justify-between py-3 border-b border-gray-100 last:border-b-0">
+              <div className="flex items-center space-x-4">
+                <div className="w-8 h-8 bg-sage-green/10 rounded-full flex items-center justify-center">
+                  <span className="text-sage-green font-medium text-sm">{index + 1}</span>
+                </div>
+                <div>
+                  <div className="text-body font-medium text-sage-bg">{customer.name}</div>
+                  <div className="text-xs text-sage-bg/60">{customer.orders} orders • Last: {customer.lastOrder}</div>
+                </div>
+              </div>
+              <div className="text-right">
+                <div className="text-body font-medium text-sage-green">R {customer.revenue.toLocaleString()}</div>
+                <div className="text-xs text-sage-bg/60">Total Revenue</div>
+              </div>
+            </div>
           ))}
+        </div>
+      </div>
+
+      {/* Customer Segmentation */}
+      <div className="grid grid-cols-2 gap-6">
+        <div className="bg-white p-6 rounded-lg border border-gray-200">
+          <h3 className="text-button font-medium text-sage-bg mb-4">Customer Segments</h3>
+          <div className="space-y-3">
+            {[
+              { segment: 'VIP Customers', count: 45, percentage: 3.6, color: 'text-purple-600' },
+              { segment: 'Regular Customers', count: 234, percentage: 18.8, color: 'text-sage-green' },
+              { segment: 'Occasional Buyers', count: 567, percentage: 45.5, color: 'text-sage-blue' },
+              { segment: 'New Customers', count: 401, percentage: 32.1, color: 'text-orange-600' }
+            ].map((segment, index) => (
+              <div key={index} className="flex items-center justify-between">
+                <div className="flex items-center space-x-3">
+                  <div className={`w-3 h-3 rounded-full ${segment.color.replace('text-', 'bg-')}`}></div>
+                  <span className="text-body text-sage-bg">{segment.segment}</span>
+                </div>
+                <div className="text-right">
+                  <div className={`text-body font-medium ${segment.color}`}>{segment.count}</div>
+                  <div className="text-xs text-sage-bg/60">{segment.percentage}%</div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="bg-white p-6 rounded-lg border border-gray-200">
+          <h3 className="text-button font-medium text-sage-bg mb-4">Customer Retention</h3>
+          <div className="space-y-4">
+            <div>
+              <div className="flex justify-between text-body mb-2">
+                <span className="text-sage-bg/60">Repeat Purchase Rate</span>
+                <span className="text-sage-bg font-medium">68.5%</span>
+              </div>
+              <div className="w-full bg-gray-200 rounded-full h-2">
+                <div className="bg-sage-green h-2 rounded-full" style={{ width: '68.5%' }}></div>
+              </div>
+            </div>
+            <div>
+              <div className="flex justify-between text-body mb-2">
+                <span className="text-sage-bg/60">Customer Lifetime Value</span>
+                <span className="text-sage-bg font-medium">R 2,450</span>
+              </div>
+            </div>
+            <div>
+              <div className="flex justify-between text-body mb-2">
+                <span className="text-sage-bg/60">Average Days Between Orders</span>
+                <span className="text-sage-bg font-medium">28 days</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+
+  const TaxReportContent = () => (
+    <div className="space-y-6">
+      {/* Tax Summary */}
+      <div className="grid grid-cols-4 gap-6">
+        <div className="bg-white p-6 rounded-lg border border-gray-200">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-body text-sage-bg/60">Total VAT Collected</p>
+              <p className="text-title font-title text-sage-green">R 42,675.50</p>
+            </div>
+            <FileText className="w-8 h-8 text-sage-green" />
+          </div>
+          <p className="text-xs text-sage-green mt-2">This {dateRange}</p>
+        </div>
+
+        <div className="bg-white p-6 rounded-lg border border-gray-200">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-body text-sage-bg/60">Taxable Sales</p>
+              <p className="text-title font-title text-sage-bg">R 284,503.33</p>
+            </div>
+            <DollarSign className="w-8 h-8 text-sage-bg" />
+          </div>
+        </div>
+
+        <div className="bg-white p-6 rounded-lg border border-gray-200">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-body text-sage-bg/60">Exempt Sales</p>
+              <p className="text-title font-title text-sage-blue">R 15,250.00</p>
+            </div>
+            <FileText className="w-8 h-8 text-sage-blue" />
+          </div>
+        </div>
+
+        <div className="bg-white p-6 rounded-lg border border-gray-200">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-body text-sage-bg/60">VAT Rate</p>
+              <p className="text-title font-title text-sage-bg">{((selectedCompany?.taxRate || 0.15) * 100).toFixed(0)}%</p>
+            </div>
+            <FileText className="w-8 h-8 text-sage-bg" />
+          </div>
+        </div>
+      </div>
+
+      {/* VAT Return Preview */}
+      <div className="bg-white p-6 rounded-lg border border-gray-200">
+        <div className="flex items-center justify-between mb-6">
+          <h3 className="text-button font-medium text-sage-bg">VAT Return Summary - {new Date().getFullYear()}</h3>
+          <div className="flex space-x-2">
+            <button className="px-4 py-2 bg-sage-green text-white rounded-md hover:bg-sage-green/90 transition-colors text-body">
+              Generate VAT201
+            </button>
+            <button className="px-4 py-2 border border-gray-300 text-sage-bg rounded-md hover:bg-gray-50 transition-colors text-body">
+              View Previous Returns
+            </button>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-2 gap-8">
+          <div>
+            <h4 className="text-body font-medium text-sage-bg mb-4">Output VAT (Sales)</h4>
+            <div className="space-y-3">
+              {[
+                { description: 'Standard Rate Sales (15%)', amount: 284503.33, vat: 42675.50 },
+                { description: 'Zero Rate Sales', amount: 8750.00, vat: 0.00 },
+                { description: 'Exempt Sales', amount: 15250.00, vat: 0.00 }
+              ].map((item, index) => (
+                <div key={index} className="flex justify-between py-2 border-b border-gray-100">
+                  <span className="text-body text-sage-bg/80">{item.description}</span>
+                  <div className="text-right">
+                    <div className="text-body text-sage-bg">R {item.amount.toLocaleString()}</div>
+                    <div className="text-xs text-sage-green">VAT: R {item.vat.toLocaleString()}</div>
+                  </div>
+                </div>
+              ))}
+              <div className="flex justify-between py-2 font-medium border-t border-gray-200">
+                <span className="text-body text-sage-bg">Total Output VAT</span>
+                <span className="text-body text-sage-green">R 42,675.50</span>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <h4 className="text-body font-medium text-sage-bg mb-4">Input VAT (Purchases)</h4>
+            <div className="space-y-3">
+              {[
+                { description: 'Stock Purchases', amount: 125750.00, vat: 18862.50 },
+                { description: 'Operating Expenses', amount: 35200.00, vat: 5280.00 },
+                { description: 'Equipment & Assets', amount: 45000.00, vat: 6750.00 }
+              ].map((item, index) => (
+                <div key={index} className="flex justify-between py-2 border-b border-gray-100">
+                  <span className="text-body text-sage-bg/80">{item.description}</span>
+                  <div className="text-right">
+                    <div className="text-body text-sage-bg">R {item.amount.toLocaleString()}</div>
+                    <div className="text-xs text-sage-blue">VAT: R {item.vat.toLocaleString()}</div>
+                  </div>
+                </div>
+              ))}
+              <div className="flex justify-between py-2 font-medium border-t border-gray-200">
+                <span className="text-body text-sage-bg">Total Input VAT</span>
+                <span className="text-body text-sage-blue">R 30,892.50</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="mt-6 pt-6 border-t border-gray-200">
+          <div className="flex justify-between items-center">
+            <span className="text-button font-medium text-sage-bg">Net VAT Payable/Refundable</span>
+            <span className="text-title font-title text-sage-green">R 11,783.00</span>
+          </div>
+          <p className="text-xs text-sage-bg/60 mt-2">Due Date: {new Date(Date.now() + 30*24*60*60*1000).toLocaleDateString()}</p>
+        </div>
+      </div>
+
+      {/* Tax Compliance */}
+      <div className="grid grid-cols-3 gap-6">
+        <div className="bg-white p-6 rounded-lg border border-gray-200">
+          <h4 className="text-button font-medium text-sage-bg mb-4">Filing Status</h4>
+          <div className="space-y-3">
+            <div className="flex items-center space-x-2">
+              <div className="w-3 h-3 bg-green-500 rounded-full"></div>
+              <span className="text-body text-sage-bg">VAT Registration: Active</span>
+            </div>
+            <div className="flex items-center space-x-2">
+              <div className="w-3 h-3 bg-green-500 rounded-full"></div>
+              <span className="text-body text-sage-bg">Last Return: Filed on time</span>
+            </div>
+            <div className="flex items-center space-x-2">
+              <div className="w-3 h-3 bg-orange-500 rounded-full"></div>
+              <span className="text-body text-sage-bg">Next Due: {new Date(Date.now() + 15*24*60*60*1000).toLocaleDateString()}</span>
+            </div>
+          </div>
+        </div>
+
+        <div className="bg-white p-6 rounded-lg border border-gray-200">
+          <h4 className="text-button font-medium text-sage-bg mb-4">Tax Categories</h4>
+          <div className="space-y-2">
+            {[
+              { category: 'Standard Rate (15%)', percentage: 85.2 },
+              { category: 'Zero Rate (0%)', percentage: 8.5 },
+              { category: 'Exempt', percentage: 6.3 }
+            ].map((cat, index) => (
+              <div key={index}>
+                <div className="flex justify-between text-body mb-1">
+                  <span className="text-sage-bg/80">{cat.category}</span>
+                  <span className="text-sage-bg">{cat.percentage}%</span>
+                </div>
+                <div className="w-full bg-gray-200 rounded-full h-1">
+                  <div 
+                    className="bg-sage-green h-1 rounded-full" 
+                    style={{ width: `${cat.percentage}%` }}
+                  ></div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="bg-white p-6 rounded-lg border border-gray-200">
+          <h4 className="text-button font-medium text-sage-bg mb-4">Audit Trail</h4>
+          <div className="space-y-3 text-body">
+            <div className="flex justify-between">
+              <span className="text-sage-bg/60">Last Audit</span>
+              <span className="text-sage-bg">2024-03-15</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-sage-bg/60">Compliance Score</span>
+              <span className="text-green-600 font-medium">98.5%</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-sage-bg/60">Records Retained</span>
+              <span className="text-sage-bg">7 years</span>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -303,19 +617,7 @@ const ReportsPage = ({ selectedCompany }) => {
           {/* Report Content */}
           <div className="p-6">
             {selectedReport === 'sales' && <SalesReportContent />}
-            {selectedReport === 'inventory' && <InventoryReportContent />}
-            {selectedReport === 'customers' && (
-              <div className="text-center py-12 text-sage-bg/60">
-                <Users className="w-12 h-12 mx-auto mb-4 opacity-50" />
-                <p className="text-body">Customer reports coming soon</p>
-              </div>
-            )}
-            {selectedReport === 'tax' && (
-              <div className="text-center py-12 text-sage-bg/60">
-                <FileText className="w-12 h-12 mx-auto mb-4 opacity-50" />
-                <p className="text-body">Tax reports coming soon</p>
-              </div>
-            )}
+            {selectedReport === 'inventory' && <InventoryReportContent />}            {selectedReport === 'customers' && <CustomerReportContent />}            {selectedReport === 'tax' && <TaxReportContent />}
           </div>
         </div>
       </div>
